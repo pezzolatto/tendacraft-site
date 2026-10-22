@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    
     <script>
         tailwind.config = {
             theme: {
@@ -23,7 +23,7 @@
                             card: '#151C28',
                             border: '#2A364F',
                             primary: '#10B981', // Emerald/Neon Green
-                            accent: '#06B6D4',  // Cyan
+                            accent: '#00B8D4', // Cyan
                             gold: '#F59E0B'
                         }
                     },
@@ -41,439 +41,85 @@
             color: #E2E8F0;
             font-family: 'Inter', sans-serif;
         }
-        .glow-effect {
-            box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25);
-        }
-        .glow-cyan {
-            box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.25);
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #0B0F17;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #2A364F;
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #10B981;
-        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between custom-scrollbar">
+<body class="min-h-screen flex flex-col justify-between">
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-brand-primary text-gray-950 font-bold px-6 py-3 rounded-lg shadow-2xl flex items-center gap-3 transition-all duration-300 opacity-0 translate-y-10 pointer-events-none">
-        <i class="fa-solid fa-circle-check text-xl"></i>
-        <span id="toast-message">IP Copiado com Sucesso!</span>
-    </div>
-
-    <!-- Navigation Header -->
-    <nav class="border-b border-brand-border/60 bg-brand-dark/80 backdrop-blur-md sticky top-0 z-40">
+    <!-- Header / Navegação -->
+    <header class="border-b border-brand-border bg-brand-dark/80 backdrop-blur-md sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <!-- Logo -->
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-brand-primary to-brand-accent flex items-center justify-center font-title font-bold text-gray-950 text-2xl shadow-lg shadow-brand-primary/20">
-                    T
+                <div class="bg-brand-primary/10 border border-brand-primary/30 p-2.5 rounded-xl text-brand-primary">
+                    <i class="fa-solid fa-cube text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="font-title font-bold text-2xl tracking-wider text-white">TENDA<span class="text-brand-primary">CRAFT</span></h1>
-                    <p class="text-xs text-gray-400 font-medium tracking-wide">RPG URBANO</p>
+                    <h1 class="font-title text-2xl font-bold tracking-wider text-white">TENDA<span class="text-brand-primary">CRAFT</span></h1>
+                    <p class="text-xs text-slate-400">Servidor RPG Urbano</p>
                 </div>
             </div>
-
-            <!-- Nav Links -->
-            <div class="hidden md:flex items-center gap-8 font-title font-semibold text-lg text-gray-300">
-                <a href="#inicio" class="hover:text-brand-primary transition-colors">Início</a>
-                <a href="#mapa" class="hover:text-brand-primary transition-colors">Mapa 2D</a>
-                <a href="#ranking" class="hover:text-brand-primary transition-colors">Ranking ykRanks</a>
-                <a href="#sobre" class="hover:text-brand-primary transition-colors">Sobre</a>
-            </div>
-
-            <!-- Server IP Button -->
-            <button onclick="copyIp('tendacraft.com.br')" class="group relative inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white bg-brand-card border border-brand-border rounded-xl hover:border-brand-primary transition-all duration-300 shadow-md">
-                <span class="flex items-center gap-2">
-                    <i class="fa-solid fa-network-wired text-brand-primary group-hover:animate-pulse"></i>
-                    <span>tendacraft.com.br</span>
-                    <i class="fa-regular fa-copy text-gray-400 group-hover:text-white transition-colors ml-1"></i>
+            <div class="flex items-center gap-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Online
                 </span>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header id="inicio" class="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32 border-b border-brand-border/40">
-        <!-- Background Gradient Glows -->
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-brand-primary/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute top-1/3 right-10 w-80 h-80 bg-brand-accent/10 rounded-full blur-3xl pointer-events-none"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <!-- Server Status Tag -->
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-card border border-brand-border text-xs font-semibold mb-6">
-                <span class="relative flex h-2.5 w-2.5">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-primary"></span>
-                </span>
-                <span class="text-gray-300">Servidor Online</span>
-                <span class="text-gray-600">|</span>
-                <span class="text-brand-primary" id="player-count">Conectado (Enxada Host)</span>
-            </div>
-
-            <h2 class="font-title font-extrabold text-4xl sm:text-6xl md:text-7xl tracking-tight text-white mb-6">
-                Sua vida urbana no <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-emerald-300 to-brand-accent">Minecraft</span>
-            </h2>
-            
-            <p class="max-w-2xl mx-auto text-gray-400 text-base sm:text-lg mb-8 font-normal leading-relaxed">
-                Trabalhe, conquiste imóveis, evolua seu nível no ranking urbano e construa seu império com seus amigos no TendaCraft.
-            </p>
-
-            <!-- Actions -->
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <button onclick="copyIp('tendacraft.com.br')" class="w-full sm:w-auto px-8 py-4 bg-brand-primary hover:bg-emerald-400 text-gray-950 font-bold font-title text-xl rounded-xl shadow-lg shadow-brand-primary/20 hover:shadow-brand-primary/40 transition-all duration-300 flex items-center justify-center gap-3">
-                    <i class="fa-solid fa-play"></i>
-                    <span>JOGAR AGORA</span>
-                </button>
-                <a href="#mapa" class="w-full sm:w-auto px-8 py-4 bg-brand-card hover:bg-brand-border text-white font-semibold font-title text-xl rounded-xl border border-brand-border transition-all duration-300 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-map-location-dot text-brand-accent"></i>
-                    <span>VER MAPA 2D</span>
-                </a>
             </div>
         </div>
     </header>
 
-    <!-- Dynmap Section -->
-    <section id="mapa" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-            <div>
-                <div class="flex items-center gap-2 text-brand-accent font-title font-bold tracking-wider text-sm">
-                    <i class="fa-solid fa-earth-americas"></i>
-                    <span>DYNMAP INTERATIVO</span>
-                </div>
-                <h3 class="font-title font-bold text-3xl sm:text-4xl text-white mt-1">Mapa em Tempo Real</h3>
+    <!-- Conteúdo Principal -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Secção do Mapa (Dynmap) - Ocupa 2 colunas -->
+        <section class="lg:col-span-2 bg-brand-card border border-brand-border rounded-2xl overflow-hidden flex flex-col shadow-xl">
+            <div class="p-4 border-b border-brand-border flex items-center justify-between bg-brand-dark/50">
+                <h2 class="font-title text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-map text-brand-primary">></i> Mapa ao Vivo (Dynmap)
+                </h2>
+                <span class="text-xs text-slate-400">Mundo TendaCraft</span>
             </div>
-            <div class="flex items-center gap-3">
-                <button onclick="toggleMapConfig()" class="px-4 py-2 bg-brand-card border border-brand-border hover:border-brand-accent rounded-lg text-sm font-medium text-gray-300 flex items-center gap-2 transition-colors">
-                    <i class="fa-solid fa-gear text-brand-accent"></i>
-                    <span>Configurar URL</span>
-                </button>
-                <button onclick="openMapFullscreen()" class="px-4 py-2 bg-brand-card border border-brand-border hover:border-brand-primary rounded-lg text-sm font-medium text-gray-300 flex items-center gap-2 transition-colors">
-                    <i class="fa-solid fa-expand text-brand-primary"></i>
-                    <span>Tela Cheia</span>
-                </button>
+            <div class="relative w-full h-[550px] bg-slate-950 flex items-center justify-center">
+                <!-- Substitui o src abaixo pelo link web do Dynmap fornecido pela Enxada Host ou integrador -->
+                <iframe src="SEU_LINK_DO_DYNMAP_AQUI" 
+                        class="w-full h-full border-none" 
+                        title="Dynmap TendaCraft">
+                </iframe>
             </div>
-        </div>
+        </section>
 
-        <!-- URL Configuration Panel (Hidden by Default) -->
-        <div id="map-config-panel" class="hidden mb-6 p-4 bg-brand-card border border-brand-accent/40 rounded-xl">
-            <label class="block text-xs font-semibold text-gray-300 mb-2">Insira a URL do Dynmap da Enxada Host (ex: http://SEU_IP:PORTA):</label>
-            <div class="flex gap-2">
-                <input type="text" id="dynmap-url-input" placeholder="http://ip-da-enxada:porta" class="flex-1 bg-brand-dark border border-brand-border rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-brand-accent">
-                <button onclick="updateDynmapUrl()" class="px-4 py-2 bg-brand-accent text-gray-950 font-bold rounded-lg text-sm hover:bg-cyan-400 transition-colors">
-                    Salvar
-                </button>
+        <!-- Secção do Ranking de Jogadores - Ocupa 1 coluna -->
+        <section class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden flex flex-col shadow-xl">
+            <div class="p-4 border-b border-brand-border flex items-center justify-between bg-brand-dark/50">
+                <h2 class="font-title text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-trophy text-brand-gold"></i> Top Jogadores
+                </h2>
+                <span class="text-xs text-slate-400">Ranking</span>
             </div>
-        </div>
-
-        <!-- Map Iframe Wrapper -->
-        <div class="relative w-full h-[500px] md:h-[600px] bg-brand-card border border-brand-border rounded-2xl overflow-hidden shadow-2xl glow-cyan">
-            <iframe id="dynmap-iframe" src="about:blank" class="w-full h-full border-0" loading="lazy"></iframe>
-            
-            <!-- Placeholder Overlay when URL is not set/fails -->
-            <div id="map-placeholder" class="absolute inset-0 bg-brand-card/95 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
-                <i class="fa-solid fa-map-location-dot text-6xl text-brand-accent/40 mb-4 animate-bounce"></i>
-                <h4 class="font-title font-bold text-2xl text-white mb-2">Configuração do Mapa</h4>
-                <p class="text-gray-400 max-w-md text-sm mb-6">
-                    Para visualizar o mapa 2D, clique no botão "Configurar URL" acima e coloque o link e porta gerados pelo plugin Dynmap no painel da Enxada Host.
-                </p>
-                <button onclick="toggleMapConfig()" class="px-6 py-3 bg-brand-accent hover:bg-cyan-400 text-gray-950 font-bold font-title text-lg rounded-xl transition-all">
-                    CONFIGURAR DYNMAP
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- ykRanks Ranking Section -->
-    <section id="ranking" class="py-16 bg-brand-card/30 border-y border-brand-border/40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-                <div>
-                    <div class="flex items-center gap-2 text-brand-gold font-title font-bold tracking-wider text-sm">
-                        <i class="fa-solid fa-trophy"></i>
-                        <span>SISTEMA YKRANKS</span>
+            <div class="p-4 flex-grow overflow-y-auto space-y-3">
+                <!-- Exemplo de item do ranking (podes preencher dinâmico ou com o ykranks) -->
+                <div class="flex items-center justify-between p-3 rounded-xl bg-brand-dark/40 border border-brand-border/50">
+                    <div class="flex items-center gap-3">
+                        <span class="font-title font-bold text-brand-gold text-lg w-6 text-center">1</span>
+                        <div class="w-9 h-9 rounded-lg bg-brand-border flex items-center justify-center text-white font-bold text-sm">
+                            P
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-white">Pezzolatto</p>
+                            <p class="text-xs text-slate-400">Nível 50</p>
+                        </div>
                     </div>
-                    <h3 class="font-title font-bold text-3xl sm:text-4xl text-white mt-1">Ranking do Servidor</h3>
+                    <span class="text-xs font-medium text-brand-primary bg-brand-primary/10 px-2.5 py-1 rounded-lg">1420 pts</span>
                 </div>
                 
-                <!-- Search & Filters -->
-                <div class="flex items-center gap-3">
-                    <div class="relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
-                        <input type="text" id="rank-search" onkeyup="filterRanks()" placeholder="Buscar jogador..." class="bg-brand-card border border-brand-border rounded-xl pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-primary w-48 sm:w-64">
-                    </div>
-                </div>
+                <!-- Podes duplicar este bloco para mais jogadores do ranking -->
             </div>
+        </section>
 
-            <!-- Top 3 Podium Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10" id="podium-container">
-                <!-- Top 2 -->
-                <div class="order-2 md:order-1 bg-brand-card border border-brand-border rounded-2xl p-6 flex flex-col items-center text-center relative overflow-hidden group hover:border-gray-400 transition-all">
-                    <div class="absolute top-3 left-3 bg-gray-700/60 text-gray-300 font-title font-bold px-3 py-1 rounded-lg text-sm border border-gray-600">#2</div>
-                    <img src="https://crafatar.com/avatars/Steve?size=80&overlay" class="w-20 h-20 rounded-xl mb-4 shadow-lg border-2 border-gray-400 bg-brand-dark group-hover:scale-105 transition-transform" alt="Skin Top 2">
-                    <h4 class="font-title font-bold text-xl text-white" id="top2-name">Carregando...</h4>
-                    <span class="text-xs font-semibold px-2.5 py-1 rounded bg-brand-accent/10 text-brand-accent border border-brand-accent/20 mt-1" id="top2-rank">Rank</span>
-                    <p class="text-gray-400 text-sm mt-3 font-medium" id="top2-level">Nível --</p>
-                </div>
+    </main>
 
-                <!-- Top 1 (Center & Crown) -->
-                <div class="order-1 md:order-2 bg-gradient-to-b from-brand-card to-brand-card/80 border-2 border-brand-gold/60 rounded-2xl p-6 flex flex-col items-center text-center relative overflow-hidden group shadow-xl shadow-brand-gold/5 hover:border-brand-gold transition-all -mt-2">
-                    <div class="absolute top-3 left-3 bg-brand-gold text-gray-950 font-title font-bold px-3 py-1 rounded-lg text-sm shadow-md">TOP 1</div>
-                    <i class="fa-solid fa-crown text-brand-gold text-2xl absolute top-3 right-4 animate-bounce"></i>
-                    <img src="https://crafatar.com/avatars/Alex?size=96&overlay" class="w-24 h-24 rounded-xl mb-4 shadow-xl border-2 border-brand-gold bg-brand-dark group-hover:scale-105 transition-transform" alt="Skin Top 1">
-                    <h4 class="font-title font-bold text-2xl text-white" id="top1-name">Carregando...</h4>
-                    <span class="text-xs font-semibold px-3 py-1 rounded bg-brand-gold/20 text-brand-gold border border-brand-gold/30 mt-1" id="top1-rank">Rank Supremo</span>
-                    <p class="text-brand-primary text-base mt-3 font-bold" id="top1-level">Nível --</p>
-                </div>
-
-                <!-- Top 3 -->
-                <div class="order-3 bg-brand-card border border-brand-border rounded-2xl p-6 flex flex-col items-center text-center relative overflow-hidden group hover:border-amber-700/60 transition-all">
-                    <div class="absolute top-3 left-3 bg-amber-800/60 text-amber-200 font-title font-bold px-3 py-1 rounded-lg text-sm border border-amber-700">#3</div>
-                    <img src="https://crafatar.com/avatars/MHF_Steve?size=80&overlay" class="w-20 h-20 rounded-xl mb-4 shadow-lg border-2 border-amber-700 bg-brand-dark group-hover:scale-105 transition-transform" alt="Skin Top 3">
-                    <h4 class="font-title font-bold text-xl text-white" id="top3-name">Carregando...</h4>
-                    <span class="text-xs font-semibold px-2.5 py-1 rounded bg-gray-800 text-gray-300 border border-gray-700 mt-1" id="top3-rank">Rank</span>
-                    <p class="text-gray-400 text-sm mt-3 font-medium" id="top3-level">Nível --</p>
-                </div>
-            </div>
-
-            <!-- Full Ranking Table -->
-            <div class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden shadow-xl">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="border-b border-brand-border bg-brand-dark/50 text-xs font-title font-bold text-gray-400 uppercase tracking-wider">
-                                <th class="py-4 px-6">Posição</th>
-                                <th class="py-4 px-6">Jogador</th>
-                                <th class="py-4 px-6">Título (ykRanks)</th>
-                                <th class="py-4 px-6 text-right">Nível / Experiência</th>
-                            </tr>
-                        </thead>
-                        <tbody id="rank-table-body" class="divide-y divide-brand-border/40 text-sm">
-                            <!-- Rows injected via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sobre o RPG Urbano -->
-    <section id="sobre" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div class="text-center max-w-3xl mx-auto mb-12">
-            <div class="flex items-center justify-center gap-2 text-brand-primary font-title font-bold tracking-wider text-sm mb-2">
-                <i class="fa-solid fa-city"></i>
-                <span>SISTEMA DE JOGO</span>
-            </div>
-            <h3 class="font-title font-bold text-3xl sm:text-4xl text-white">Como Funciona o RPG Urbano?</h3>
-            <p class="text-gray-400 mt-3">Experiência completa focada na convivência e evolução de amigos dentro do servidor.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Feature 1 -->
-            <div class="bg-brand-card border border-brand-border rounded-2xl p-6 hover:border-brand-primary transition-all group">
-                <div class="w-12 h-12 rounded-xl bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-brand-primary text-xl mb-4 group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-briefcase"></i>
-                </div>
-                <h4 class="font-title font-bold text-xl text-white mb-2">Trabalhos & Economia</h4>
-                <p class="text-gray-400 text-sm leading-relaxed">Escolha sua profissão, ganhe dinheiro no servidor e comercialize com seus amigos no mercado urbano.</p>
-            </div>
-
-            <!-- Feature 2 -->
-            <div class="bg-brand-card border border-brand-border rounded-2xl p-6 hover:border-brand-accent transition-all group">
-                <div class="w-12 h-12 rounded-xl bg-brand-accent/10 border border-brand-accent/20 flex items-center justify-center text-brand-accent text-xl mb-4 group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-building"></i>
-                </div>
-                <h4 class="font-title font-bold text-xl text-white mb-2">Imóveis & Terrenos</h4>
-                <p class="text-gray-400 text-sm leading-relaxed">Compre casas, apartamentos e terrenos na cidade para construir e guardar seus recursos com segurança.</p>
-            </div>
-
-            <!-- Feature 3 -->
-            <div class="bg-brand-card border border-brand-border rounded-2xl p-6 hover:border-brand-gold transition-all group">
-                <div class="w-12 h-12 rounded-xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center text-brand-gold text-xl mb-4 group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-chart-line"></i>
-                </div>
-                <h4 class="font-title font-bold text-xl text-white mb-2">Evolução de Rank</h4>
-                <p class="text-gray-400 text-sm leading-relaxed">Ganhe XP realizando atividades e suba de nível com o ykRanks para desbloquear novos privilégios.</p>
-            </div>
-
-            <!-- Feature 4 -->
-            <div class="bg-brand-card border border-brand-border rounded-2xl p-6 hover:border-emerald-400 transition-all group">
-                <div class="w-12 h-12 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center text-emerald-400 text-xl mb-4 group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-users"></i>
-                </div>
-                <h4 class="font-title font-bold text-xl text-white mb-2">Clãs & Famílias</h4>
-                <p class="text-gray-400 text-sm leading-relaxed">Junte-se com seus amigos para dominar setores da cidade ou criar alianças pacíficas de negócios.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="border-t border-brand-border bg-brand-dark py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-                <span class="font-title font-bold text-lg text-white">Tenda<span class="text-brand-primary">Craft</span></span>
-                <span class="text-gray-600">|</span>
-                <p class="text-xs text-gray-500">Servidor Privado entre Amigos • Hospedado na Enxada Host</p>
-            </div>
-            <p class="text-xs text-gray-600">Minecraft é marca registrada da Mojang Studios.</p>
-        </div>
+    <!-- Rodapé -->
+    <footer class="border-t border-brand-border bg-brand-dark/50 py-6 text-center text-xs text-slate-500">
+        <p>&copy; 2026 TendaCraft. Todos os direitos reservados. Conectado em <span class="text-slate-400">tendacraft.com.br</span></p>
     </footer>
 
-    <!-- Scripts -->
-    <script>
-        // Dados de exemplo do Ranking (ykRanks)
-        // Substitua por seus dados reais ou conecte via API/JSON
-        const sampleRanks = [
-            { pos: 1, nick: "Gabriel_Dev", rank: "Prefeito", level: 120, xp: "45.200 XP" },
-            { pos: 2, nick: "BrunoCraft", rank: "Empresário", level: 98, xp: "38.100 XP" },
-            { pos: 3, nick: "Lucas_RPG", rank: "Magnata", level: 85, xp: "31.400 XP" },
-            { pos: 4, nick: "Matheus99", rank: "Comerciante", level: 72, xp: "25.000 XP" },
-            { pos: 5, nick: "Felipe_Vip", rank: "Cidadão", level: 64, xp: "19.800 XP" },
-            { pos: 6, nick: "Rafa_Urban", rank: "Cidadão", level: 50, xp: "14.200 XP" },
-            { pos: 7, nick: "Thiago_PvP", rank: "Trabalhador", level: 42, xp: "11.000 XP" },
-            { pos: 8, nick: "Pedro_Builder", rank: "Iniciante", level: 25, xp: "5.300 XP" }
-        ];
-
-        // Inicialização
-        document.addEventListener('DOMContentLoaded', () => {
-            renderPodium(sampleRanks.slice(0, 3));
-            renderRankTable(sampleRanks);
-            loadSavedDynmapUrl();
-        });
-
-        // Função para Copiar IP
-        function copyIp(ip) {
-            const tempInput = document.createElement('input');
-            tempInput.value = ip;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-
-            showToast("IP " + ip + " copiado para a área de transferência!");
-        }
-
-        // Exibir Toast
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toast-message');
-            toastMessage.textContent = message;
-            
-            toast.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
-            toast.classList.add('opacity-100', 'translate-y-0');
-
-            setTimeout(() => {
-                toast.classList.remove('opacity-100', 'translate-y-0');
-                toast.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
-            }, 3000);
-        }
-
-        // Renderizar Pódio Top 3
-        function renderPodium(top3) {
-            if (top3[0]) {
-                document.getElementById('top1-name').textContent = top3[0].nick;
-                document.getElementById('top1-rank').textContent = top3[0].rank;
-                document.getElementById('top1-level').textContent = "Nível " + top3[0].level;
-                document.querySelector('#podium-container img[alt="Skin Top 1"]').src = `https://crafatar.com/avatars/${top3[0].nick}?size=96&overlay`;
-            }
-            if (top3[1]) {
-                document.getElementById('top2-name').textContent = top3[1].nick;
-                document.getElementById('top2-rank').textContent = top3[1].rank;
-                document.getElementById('top2-level').textContent = "Nível " + top3[1].level;
-                document.querySelector('#podium-container img[alt="Skin Top 2"]').src = `https://crafatar.com/avatars/${top3[1].nick}?size=80&overlay`;
-            }
-            if (top3[2]) {
-                document.getElementById('top3-name').textContent = top3[2].nick;
-                document.getElementById('top3-rank').textContent = top3[2].rank;
-                document.getElementById('top3-level').textContent = "Nível " + top3[2].level;
-                document.querySelector('#podium-container img[alt="Skin Top 3"]').src = `https://crafatar.com/avatars/${top3[2].nick}?size=80&overlay`;
-            }
-        }
-
-        // Renderizar Tabela de Ranks
-        function renderRankTable(ranks) {
-            const tbody = document.getElementById('rank-table-body');
-            tbody.innerHTML = '';
-
-            ranks.forEach((player) => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-brand-card/60 transition-colors";
-
-                tr.innerHTML = `
-                    <td class="py-4 px-6 font-title font-bold text-gray-400">#${player.pos}</td>
-                    <td class="py-4 px-6 flex items-center gap-3">
-                        <img src="https://crafatar.com/avatars/${player.nick}?size=32&overlay" class="w-8 h-8 rounded-lg bg-brand-dark" alt="${player.nick}">
-                        <span class="font-semibold text-white">${player.nick}</span>
-                    </td>
-                    <td class="py-4 px-6">
-                        <span class="px-2.5 py-1 rounded text-xs font-semibold bg-brand-border/60 text-brand-accent border border-brand-accent/20">
-                            ${player.rank}
-                        </span>
-                    </td>
-                    <td class="py-4 px-6 text-right">
-                        <div class="font-bold text-white">Nível ${player.level}</div>
-                        <div class="text-xs text-gray-500">${player.xp}</div>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        // Filtrar Jogadores no Ranking
-        function filterRanks() {
-            const query = document.getElementById('rank-search').value.toLowerCase();
-            const filtered = sampleRanks.filter(p => p.nick.toLowerCase().includes(query) || p.rank.toLowerCase().includes(query));
-            renderRankTable(filtered);
-        }
-
-        // Lógica do Dynmap
-        function toggleMapConfig() {
-            const panel = document.getElementById('map-config-panel');
-            panel.classList.toggle('hidden');
-        }
-
-        function updateDynmapUrl() {
-            const urlInput = document.getElementById('dynmap-url-input').value.trim();
-            if (!urlInput) return;
-
-            localStorage.setItem('tendacraft_dynmap_url', urlInput);
-            applyDynmapUrl(urlInput);
-            toggleMapConfig();
-            showToast("URL do Dynmap atualizada com sucesso!");
-        }
-
-        function loadSavedDynmapUrl() {
-            const savedUrl = localStorage.getItem('tendacraft_dynmap_url');
-            if (savedUrl) {
-                applyDynmapUrl(savedUrl);
-            }
-        }
-
-        function applyDynmapUrl(url) {
-            const iframe = document.getElementById('dynmap-iframe');
-            const placeholder = document.getElementById('map-placeholder');
-            iframe.src = url;
-            placeholder.classList.add('hidden');
-        }
-
-        function openMapFullscreen() {
-            const iframe = document.getElementById('dynmap-iframe');
-            if (iframe.src && iframe.src !== 'about:blank') {
-                window.open(iframe.src, '_blank');
-            } else {
-                showToast("Configure a URL do Dynmap primeiro!");
-            }
-        }
-    </script>
 </body>
 </html>
