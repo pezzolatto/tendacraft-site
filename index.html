@@ -19,12 +19,12 @@
                 extend: {
                     colors: {
                         brand: {
-                            dark: '#0B0F17',
-                            card: '#151C28',
-                            border: '#2A364F',
-                            primary: '#10B981', // Emerald/Neon Green
-                            accent: '#00B8D4', // Cyan
-                            gold: '#F59E0B'
+                            dark: '#0F0B08',
+                            card: '#1B140F',
+                            border: '#3D2A1B',
+                            primary: '#F97316', // Laranja
+                            accent: '#FB923C', // Laranja claro
+                            gold: '#FBBF24'
                         }
                     },
                     fontFamily: {
@@ -37,8 +37,8 @@
     </script>
     <style>
         body {
-            background-color: #0B0F17;
-            color: #E2E8F0;
+            background-color: #0F0B08;
+            color: #F1E7DD;
             font-family: 'Inter', sans-serif;
         }
     </style>
@@ -54,33 +54,50 @@
                 </div>
                 <div>
                     <h1 class="font-title text-2xl font-bold tracking-wider text-white">TENDA<span class="text-brand-primary">CRAFT</span></h1>
-                    <p class="text-xs text-slate-400">Servidor RPG Urbano</p>
+                    <p class="text-xs text-stone-400">Servidor RPG Urbano</p>
                 </div>
             </div>
             <div class="flex items-center gap-3">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                    <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
                     Online
                 </span>
             </div>
         </div>
     </header>
 
+    <!-- Banner com a imagem do servidor -->
+    <section class="relative w-full h-64 sm:h-80 lg:h-[420px] overflow-hidden border-b border-brand-border bg-brand-dark">
+        <!-- Coloque a imagem na raiz do repositório com o nome tendacraft.png -->
+        <img src="tendacraft.png" alt="Vila do TendaCraft à noite"
+             class="absolute inset-0 w-full h-full object-cover"
+             onerror="this.style.display='none'">
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/40 to-transparent"></div>
+        <div class="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-end pb-8">
+            <h2 class="font-title text-3xl sm:text-5xl font-bold tracking-wider text-white drop-shadow-lg">
+                Bem-vindo ao <span class="text-brand-primary">TendaCraft</span>
+            </h2>
+            <p class="mt-2 text-sm sm:text-base text-orange-100/80 max-w-xl">
+                Uma vila viva, construída pela comunidade. Explore o mapa ao vivo e confira os melhores jogadores.
+            </p>
+        </div>
+    </section>
+
     <!-- Conteúdo Principal -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         <!-- Secção do Mapa (Dynmap) - Ocupa 2 colunas -->
-        <section class="lg:col-span-2 bg-brand-card border border-brand-border rounded-2xl overflow-hidden flex flex-col shadow-xl">
+        <section class="lg:col-span-2 bg-brand-card border border-brand-border rounded-2xl overflow-hidden flex flex-col shadow-xl shadow-orange-950/20">
             <div class="p-4 border-b border-brand-border flex items-center justify-between bg-brand-dark/50">
                 <h2 class="font-title text-lg font-bold text-white flex items-center gap-2">
                     <i class="fa-solid fa-map text-brand-primary"></i> Mapa ao Vivo (Dynmap)
                 </h2>
-                <span class="text-xs text-slate-400">Mundo TendaCraft</span>
+                <span class="text-xs text-stone-400">Mundo TendaCraft</span>
             </div>
-            <div class="relative w-full h-[550px] bg-slate-950 flex items-center justify-center">
+            <div class="relative w-full h-[70vh] min-h-[560px] lg:h-[820px] bg-black flex items-center justify-center">
                 
                 <!-- Mensagem enquanto carrega o mapa -->
-                <div id="status-mapa" class="text-xs text-slate-400 flex items-center gap-2">
+                <div id="status-mapa" class="text-xs text-stone-400 flex items-center gap-2">
                     <i class="fa-solid fa-circle-notch animate-spin text-brand-primary"></i>
                     <span>Carregando o mapa ao vivo...</span>
                 </div>
@@ -96,12 +113,12 @@
         </section>
 
         <!-- Secção do Ranking de Jogadores - Ocupa 1 coluna -->
-        <section class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden flex flex-col shadow-xl">
+        <section class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden flex flex-col shadow-xl shadow-orange-950/20 lg:self-start">
             <div class="p-4 border-b border-brand-border flex items-center justify-between bg-brand-dark/50">
                 <h2 class="font-title text-lg font-bold text-white flex items-center gap-2">
                     <i class="fa-solid fa-trophy text-brand-gold"></i> Top Jogadores
                 </h2>
-                <span class="text-xs text-slate-400">Ranking</span>
+                <span class="text-xs text-stone-400">Ranking</span>
             </div>
             <div class="p-4 flex-grow overflow-y-auto space-y-3">
                 <!-- Exemplo de item do ranking -->
@@ -113,7 +130,7 @@
                         </div>
                         <div>
                             <p class="text-sm font-semibold text-white">Pezzolatto</p>
-                            <p class="text-xs text-slate-400">Nível 50</p>
+                            <p class="text-xs text-stone-400">Nível 50</p>
                         </div>
                     </div>
                     <span class="text-xs font-medium text-brand-primary bg-brand-primary/10 px-2.5 py-1 rounded-lg">1420 pts</span>
@@ -124,8 +141,8 @@
     </main>
 
     <!-- Rodapé -->
-    <footer class="border-t border-brand-border bg-brand-dark/50 py-6 text-center text-xs text-slate-500">
-        <p>&copy; 2026 TendaCraft. Todos os direitos reservados. Conectado em <span class="text-slate-400">tendacraft.com.br</span></p>
+    <footer class="border-t border-brand-border bg-brand-dark/50 py-6 text-center text-xs text-stone-500">
+        <p>&copy; 2026 TendaCraft. Todos os direitos reservados. Conectado em <span class="text-stone-400">tendacraft.com.br</span></p>
     </footer>
 
     <!-- Script de Leitura Dinâmica do Link do Túnel -->
