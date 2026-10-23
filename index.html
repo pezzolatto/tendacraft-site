@@ -78,11 +78,20 @@
                 <span class="text-xs text-slate-400">Mundo TendaCraft</span>
             </div>
             <div class="relative w-full h-[550px] bg-slate-950 flex items-center justify-center">
-                <iframe src="https://delayed-describe-ipaq-seminar.trycloudflare.com" 
-                        class="w-full h-full border-none" 
+                
+                <!-- Mensagem enquanto carrega o mapa -->
+                <div id="status-mapa" class="text-xs text-slate-400 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-notch animate-spin text-brand-primary"></i>
+                    <span>Carregando o mapa ao vivo...</span>
+                </div>
+
+                <!-- Iframe do Dynmap (Inicia oculto e abre dinamicamente) -->
+                <iframe id="iframe-dynmap"
+                        class="w-full h-full border-none hidden" 
                         title="Dynmap TendaCraft"
                         allowfullscreen>
                 </iframe>
+
             </div>
         </section>
 
@@ -118,6 +127,31 @@
     <footer class="border-t border-brand-border bg-brand-dark/50 py-6 text-center text-xs text-slate-500">
         <p>&copy; 2026 TendaCraft. Todos os direitos reservados. Conectado em <span class="text-slate-400">tendacraft.com.br</span></p>
     </footer>
+
+    <!-- Script de Leitura Dinâmica do Link do Túnel -->
+    <script>
+        // Lê o arquivo "link" no seu repositório e injeta o endereço no iframe
+        fetch('link')
+            .then(response => {
+                if (!response.ok) throw new Error("Erro ao ler o arquivo link.");
+                return response.text();
+            })
+            .then(url => {
+                const linkLimpo = url.trim();
+                if (linkLimpo.startsWith('http')) {
+                    const iframe = document.getElementById('iframe-dynmap');
+                    iframe.src = linkLimpo;
+                    iframe.classList.remove('hidden');
+                    document.getElementById('status-mapa').classList.add('hidden');
+                } else {
+                    document.getElementById('status-mapa').innerHTML = '<span class="text-red-400"><i class="fa-solid fa-triangle-exclamation"></i> Formato de link inválido no arquivo.</span>';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById('status-mapa').innerHTML = '<span class="text-red-400"><i class="fa-solid fa-circle-xmark"></i> Não foi possível carregar o mapa. Verifique o arquivo link no GitHub.</span>';
+            });
+    </script>
 
 </body>
 </html>
