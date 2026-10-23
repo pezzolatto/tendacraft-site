@@ -3,172 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TendaCraft - Servidor RPG Urbano</title>
-    <!-- Tailwind CSS -->
+    <title>TendaCraft - Condado de Jajá</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Pixelify+Sans:wght@500;700&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            dark: '#0F0B08',
-                            card: '#1B140F',
-                            border: '#3D2A1B',
-                            primary: '#F97316', // Laranja
-                            accent: '#FB923C', // Laranja claro
-                            gold: '#FBBF24'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        title: ['Rajdhani', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
+
     <style>
+        :root {
+            --grass: #5fa832;
+            --grass-dark: #3f7a1f;
+            --dirt: #7a5230;
+            --dirt-dark: #4a2f19;
+            --night: #17110c;
+            --panel: #231a12;
+            --stone: #8a8a8a;
+            --wood: #b98a4e;
+            --wood-dark: #6d4a23;
+            --orange: #f97316;
+            --gold: #fbbf24;
+            --text: #f1e7dd;
+        }
+        html { scroll-behavior: smooth; }
         body {
-            background-color: #0F0B08;
-            color: #F1E7DD;
+            background-color: var(--night);
+            /* textura de terra feita só com CSS */
+            background-image:
+                linear-gradient(rgba(23,17,12,.88), rgba(23,17,12,.88)),
+                repeating-conic-gradient(var(--dirt-dark) 0% 25%, #3a2412 0% 50%);
+            background-size: auto, 32px 32px;
+            color: var(--text);
             font-family: 'Inter', sans-serif;
+            image-rendering: pixelated;
+        }
+        .px-title { font-family: 'Pixelify Sans', sans-serif; letter-spacing: .02em; }
+        .px-tiny { font-family: 'Press Start 2P', monospace; font-size: .6rem; line-height: 1.6; }
+
+        /* faixa de grama no topo */
+        .grass-strip {
+            height: 24px;
+            background:
+                linear-gradient(var(--grass) 0 12px, transparent 12px),
+                repeating-linear-gradient(90deg, var(--grass-dark) 0 16px, #4c8f26 16px 32px) 0 12px / 100% 12px no-repeat,
+                var(--dirt);
+            border-bottom: 4px solid var(--dirt-dark);
+        }
+
+        /* moldura "pixel" estilo inventário */
+        .mc-frame {
+            background: var(--panel);
+            box-shadow:
+                0 0 0 4px #000,
+                inset 4px 4px 0 rgba(255,255,255,.12),
+                inset -4px -4px 0 rgba(0,0,0,.45);
+        }
+        .mc-slot {
+            background: #3b3025;
+            box-shadow: inset 3px 3px 0 #1a130d, inset -3px -3px 0 #5a4a3a;
+        }
+
+        /* placa de madeira */
+        .sign {
+            background:
+                repeating-linear-gradient(0deg, rgba(0,0,0,.08) 0 4px, transparent 4px 8px),
+                var(--wood);
+            color: #2a1a0a;
+            box-shadow:
+                0 0 0 4px #000,
+                inset 4px 4px 0 rgba(255,255,255,.25),
+                inset -4px -4px 0 var(--wood-dark);
+        }
+
+        /* botão estilo Minecraft */
+        .mc-btn {
+            background: #6f6f6f;
+            color: #fff;
+            font-family: 'Pixelify Sans', sans-serif;
+            font-weight: 700;
+            text-shadow: 2px 2px 0 #2b2b2b;
+            box-shadow: 0 0 0 3px #000, inset 3px 3px 0 #a9a9a9, inset -3px -3px 0 #3c3c3c;
+            transition: background .1s;
+        }
+        .mc-btn:hover { background: #5b7fb5; }
+        .mc-btn.is-ok { background: var(--grass-dark); }
+        .mc-btn:focus-visible, a:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+
+        /* hotbar de navegação */
+        .hotbar a {
+            box-shadow: inset 3px 3px 0 #1a130d, inset -3px -3px 0 #5a4a3a;
+            background: #3b3025;
+        }
+        .hotbar a:hover { background: #4d3f31; box-shadow: 0 0 0 3px #fff, inset 3px 3px 0 #1a130d, inset -3px -3px 0 #5a4a3a; }
+
+        /* barra de XP */
+        .xp { height: 10px; background: #1b2a10; box-shadow: 0 0 0 2px #000; }
+        .xp > span { display: block; height: 100%; background: #7dff2a; box-shadow: inset 0 -3px 0 #4bb90f; }
+
+        /* camadas de chão no rodapé */
+        .layers div { height: 14px; }
+
+        @media (prefers-reduced-motion: no-preference) {
+            .hero-img { animation: sway 14s ease-in-out infinite alternate; }
+            @keyframes sway { from { transform: scale(1); } to { transform: scale(1.04); } }
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
+<body class="min-h-screen flex flex-col">
 
-    <!-- Header / Navegação -->
-    <header class="border-b border-brand-border bg-brand-dark/80 backdrop-blur-md sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="bg-brand-primary/10 border border-brand-primary/30 p-2.5 rounded-xl text-brand-primary">
-                    <i class="fa-solid fa-cube text-xl"></i>
-                </div>
-                <div>
-                    <h1 class="font-title text-2xl font-bold tracking-wider text-white">TENDA<span class="text-brand-primary">CRAFT</span></h1>
-                    <p class="text-xs text-stone-400">Servidor RPG Urbano</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-3">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-orange-500/10 text-orange-400 border border-orange-500/20">
-                    <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
-                    Online
-                </span>
-            </div>
+    <div class="grass-strip" aria-hidden="true"></div>
+
+    <!-- Título: a própria imagem do servidor -->
+    <header class="max-w-6xl w-full mx-auto px-4 sm:px-6 pt-8">
+        <div class="mc-frame overflow-hidden">
+            <h1 class="sr-only">TendaCraft</h1>
+            <img src="tendacraft.jpg" alt="TendaCraft - vila vermelha cercada por montanhas de blocos"
+                 class="hero-img block w-full h-auto">
         </div>
     </header>
 
-    <!-- Banner com a imagem do servidor -->
-    <section class="relative w-full h-64 sm:h-80 lg:h-[420px] overflow-hidden border-b border-brand-border bg-brand-dark">
-        <!-- Coloque a imagem na raiz do repositório com o nome tendacraft.png -->
-        <img src="tendacraft.png" alt="Vila do TendaCraft à noite"
-             class="absolute inset-0 w-full h-full object-cover"
-             onerror="this.style.display='none'">
-        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/40 to-transparent"></div>
-        <div class="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-end pb-8">
-            <h2 class="font-title text-3xl sm:text-5xl font-bold tracking-wider text-white drop-shadow-lg">
-                Bem-vindo ao <span class="text-brand-primary">TendaCraft</span>
-            </h2>
-            <p class="mt-2 text-sm sm:text-base text-orange-100/80 max-w-xl">
-                Uma vila viva, construída pela comunidade. Explore o mapa ao vivo e confira os melhores jogadores.
-            </p>
+    <!-- Placa de boas-vindas -->
+    <section class="max-w-4xl w-full mx-auto px-4 sm:px-6 -mt-2">
+        <div class="sign mt-10 px-6 py-8 text-center">
+            <h2 class="px-title text-3xl sm:text-5xl font-bold leading-tight">Bem-vindo ao Condado de Jajá</h2>
+            <p class="mt-3 text-base sm:text-lg font-semibold">O maior Tenda Craft da história.</p>
         </div>
+
+        <!-- IP + status -->
+        <div class="mc-frame mt-10 p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <span class="inline-block w-3 h-3 bg-green-400 animate-pulse" aria-hidden="true"></span>
+                <span class="px-tiny text-green-300">Online</span>
+            </div>
+            <div class="mc-slot px-4 py-3 text-center">
+                <span class="px-tiny text-stone-400 block mb-1">IP do servidor</span>
+                <span id="ip" class="px-title text-xl font-bold text-white">tendacraft.com.br</span>
+            </div>
+            <button id="copiar" class="mc-btn px-6 py-3 text-lg" type="button">
+                <i class="fa-regular fa-copy mr-2"></i><span>Copiar IP</span>
+            </button>
+        </div>
+
+        <!-- Hotbar -->
+        <nav class="hotbar mt-10 flex justify-center gap-3" aria-label="Seções">
+            <a href="#mapa" class="px-title flex flex-col items-center justify-center w-28 h-24 text-white text-center">
+                <i class="fa-solid fa-map text-2xl text-green-400 mb-1"></i>Mapa
+            </a>
+            <a href="#ranking" class="px-title flex flex-col items-center justify-center w-28 h-24 text-white text-center">
+                <i class="fa-solid fa-trophy text-2xl text-yellow-400 mb-1"></i>Ranking
+            </a>
+        </nav>
     </section>
 
-    <!-- Conteúdo Principal -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <!-- Secção do Mapa (Dynmap) - Ocupa 2 colunas -->
-        <section class="lg:col-span-2 bg-brand-card border border-brand-border rounded-2xl overflow-hidden flex flex-col shadow-xl shadow-orange-950/20">
-            <div class="p-4 border-b border-brand-border flex items-center justify-between bg-brand-dark/50">
-                <h2 class="font-title text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-map text-brand-primary"></i> Mapa ao Vivo (Dynmap)
+    <!-- Conteúdo principal -->
+    <main class="max-w-6xl w-full mx-auto px-4 sm:px-6 py-12 flex-grow grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+        <!-- Mapa -->
+        <section id="mapa" class="lg:col-span-2 mc-frame flex flex-col scroll-mt-6">
+            <div class="p-4 flex items-center justify-between" style="background:#2e2217">
+                <h2 class="px-title text-xl font-bold text-white flex items-center gap-3">
+                    <i class="fa-solid fa-map text-green-400"></i> Mapa ao vivo
                 </h2>
-                <span class="text-xs text-stone-400">Mundo TendaCraft</span>
+                <span class="px-tiny text-stone-400">Dynmap</span>
             </div>
             <div class="relative w-full h-[70vh] min-h-[560px] lg:h-[820px] bg-black flex items-center justify-center">
-                
-                <!-- Mensagem enquanto carrega o mapa -->
-                <div id="status-mapa" class="text-xs text-stone-400 flex items-center gap-2">
-                    <i class="fa-solid fa-circle-notch animate-spin text-brand-primary"></i>
+                <div id="status-mapa" class="text-sm text-stone-400 flex items-center gap-2 px-4 text-center">
+                    <i class="fa-solid fa-circle-notch animate-spin text-green-400"></i>
                     <span>Carregando o mapa ao vivo...</span>
                 </div>
-
-                <!-- Iframe do Dynmap (Inicia oculto e abre dinamicamente) -->
-                <iframe id="iframe-dynmap"
-                        class="w-full h-full border-none hidden" 
-                        title="Dynmap TendaCraft"
-                        allowfullscreen>
-                </iframe>
-
+                <iframe id="iframe-dynmap" class="w-full h-full border-none hidden" title="Dynmap TendaCraft" allowfullscreen></iframe>
             </div>
         </section>
 
-        <!-- Secção do Ranking de Jogadores - Ocupa 1 coluna -->
-        <section class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden flex flex-col shadow-xl shadow-orange-950/20 lg:self-start">
-            <div class="p-4 border-b border-brand-border flex items-center justify-between bg-brand-dark/50">
-                <h2 class="font-title text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-trophy text-brand-gold"></i> Top Jogadores
+        <!-- Ranking -->
+        <section id="ranking" class="mc-frame flex flex-col lg:self-start scroll-mt-6">
+            <div class="p-4 flex items-center justify-between" style="background:#2e2217">
+                <h2 class="px-title text-xl font-bold text-white flex items-center gap-3">
+                    <i class="fa-solid fa-trophy text-yellow-400"></i> Top jogadores
                 </h2>
-                <span class="text-xs text-stone-400">Ranking</span>
             </div>
-            <div class="p-4 flex-grow overflow-y-auto space-y-3">
-                <!-- Exemplo de item do ranking -->
-                <div class="flex items-center justify-between p-3 rounded-xl bg-brand-dark/40 border border-brand-border/50">
+            <div class="p-4 space-y-3">
+                <!-- Item do ranking: copie este bloco para cada jogador -->
+                <div class="mc-slot p-3">
                     <div class="flex items-center gap-3">
-                        <span class="font-title font-bold text-brand-gold text-lg w-6 text-center">1</span>
-                        <div class="w-9 h-9 rounded-lg bg-brand-border flex items-center justify-center text-white font-bold text-sm">
-                            P
-                        </div>
-                        <div>
-                            <p class="text-sm font-semibold text-white">Pezzolatto</p>
+                        <span class="px-title font-bold text-yellow-400 text-xl w-6 text-center">1</span>
+                        <img src="https://mc-heads.net/avatar/Pezzolatto/40" alt="" width="40" height="40"
+                             class="w-10 h-10 bg-stone-700" style="image-rendering:pixelated"
+                             onerror="this.style.visibility='hidden'">
+                        <div class="flex-grow min-w-0">
+                            <p class="px-title text-lg font-bold text-white leading-tight">Pezzolatto</p>
                             <p class="text-xs text-stone-400">Nível 50</p>
                         </div>
+                        <span class="px-tiny text-orange-300">1420 pts</span>
                     </div>
-                    <span class="text-xs font-medium text-brand-primary bg-brand-primary/10 px-2.5 py-1 rounded-lg">1420 pts</span>
+                    <div class="xp mt-3" role="img" aria-label="Barra de experiência"><span style="width:62%"></span></div>
                 </div>
             </div>
         </section>
-
     </main>
 
-    <!-- Rodapé -->
-    <footer class="border-t border-brand-border bg-brand-dark/50 py-6 text-center text-xs text-stone-500">
-        <p>&copy; 2026 TendaCraft. Todos os direitos reservados. Conectado em <span class="text-stone-400">tendacraft.com.br</span></p>
+    <!-- Rodapé: camadas de chão -->
+    <footer class="text-center text-xs text-stone-300">
+        <div class="layers" aria-hidden="true">
+            <div style="background:var(--grass)"></div>
+            <div style="background:var(--dirt)"></div>
+            <div style="background:#8a8a8a"></div>
+        </div>
+        <div class="py-6 px-4" style="background:#1a1a1a">
+            &copy; 2026 TendaCraft. Todos os direitos reservados. Conectado em
+            <span class="text-white">tendacraft.com.br</span>
+        </div>
     </footer>
 
-    <!-- Script de Leitura Dinâmica do Link do Túnel -->
     <script>
-        // Lê o arquivo "link" no seu repositório e injeta o endereço no iframe
+        // Lê o arquivo "link" do repositório e injeta o endereço no iframe
         fetch('link')
-            .then(response => {
-                if (!response.ok) throw new Error("Erro ao ler o arquivo link.");
-                return response.text();
-            })
+            .then(r => { if (!r.ok) throw new Error('Erro ao ler o arquivo link.'); return r.text(); })
             .then(url => {
                 const linkLimpo = url.trim();
+                const status = document.getElementById('status-mapa');
                 if (linkLimpo.startsWith('http')) {
                     const iframe = document.getElementById('iframe-dynmap');
                     iframe.src = linkLimpo;
                     iframe.classList.remove('hidden');
-                    document.getElementById('status-mapa').classList.add('hidden');
+                    status.classList.add('hidden');
                 } else {
-                    document.getElementById('status-mapa').innerHTML = '<span class="text-red-400"><i class="fa-solid fa-triangle-exclamation"></i> Formato de link inválido no arquivo.</span>';
+                    status.innerHTML = '<span class="text-red-400"><i class="fa-solid fa-triangle-exclamation"></i> Formato de link inválido no arquivo.</span>';
                 }
             })
             .catch(err => {
                 console.error(err);
-                document.getElementById('status-mapa').innerHTML = '<span class="text-red-400"><i class="fa-solid fa-circle-xmark"></i> Não foi possível carregar o mapa. Verifique o arquivo link no GitHub.</span>';
+                document.getElementById('status-mapa').innerHTML =
+                    '<span class="text-red-400"><i class="fa-solid fa-circle-xmark"></i> Não foi possível carregar o mapa. Verifique o arquivo link no GitHub.</span>';
             });
-    </script>
 
+        // Botão de copiar IP
+        const btn = document.getElementById('copiar');
+        btn.addEventListener('click', async () => {
+            const ip = document.getElementById('ip').textContent.trim();
+            try { await navigator.clipboard.writeText(ip); } catch (e) { return; }
+            const label = btn.querySelector('span');
+            btn.classList.add('is-ok');
+            label.textContent = 'IP copiado!';
+            setTimeout(() => { btn.classList.remove('is-ok'); label.textContent = 'Copiar IP'; }, 1800);
+        });
+    </script>
 </body>
 </html>
