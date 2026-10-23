@@ -133,7 +133,7 @@
         <div class="mc-frame mt-10 p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-3">
                 <span class="inline-block w-3 h-3 bg-green-400 animate-pulse" aria-hidden="true"></span>
-                <span class="px-tiny text-green-300">Online</span>
+                <span class="px-tiny text-green-300">Jogadores online: <span id="online-count">--</span></span>
             </div>
             <div class="mc-slot px-4 py-3 text-center">
                 <span class="px-tiny text-stone-400 block mb-1">IP do servidor</span>
@@ -182,8 +182,8 @@
                     <i class="fa-solid fa-trophy text-yellow-400"></i> Top jogadores
                 </h2>
             </div>
-            <div class="p-4 space-y-3">
-                <!-- Item do ranking: copie este bloco para cada jogador -->
+            <div id="lista-ranking" class="p-4 space-y-3">
+                <!-- Exemplo (aparece enquanto o ranking real não carrega) -->
                 <div class="mc-slot p-3">
                     <div class="flex items-center gap-3">
                         <span class="px-title font-bold text-yellow-400 text-xl w-6 text-center">1</span>
@@ -227,6 +227,7 @@
                     iframe.src = linkLimpo;
                     iframe.classList.remove('hidden');
                     status.classList.add('hidden');
+                    carregarDados(new URL(linkLimpo).origin);
                 } else {
                     status.innerHTML = '<span class="text-red-400"><i class="fa-solid fa-triangle-exclamation"></i> Formato de link inválido no arquivo.</span>';
                 }
@@ -236,6 +237,62 @@
                 document.getElementById('status-mapa').innerHTML =
                     '<span class="text-red-400"><i class="fa-solid fa-circle-xmark"></i> Não foi possível carregar o mapa. Verifique o arquivo link no GitHub.</span>';
             });
+
+        // Nome do mundo principal no Dynmap (o padrão é "world")
+        const MUNDO = 'world';
+
+        function carregarDados(base) {
+            atualizarOnline(base);
+            setInterval(() => atualizarOnline(base), 30000);
+            carregarRanking(base);
+            setInterval(() => carregarRanking(base), 60000);
+        }
+
+        // Jogadores online: vem do próprio Dynmap
+        function atualizarOnline(base) {
+            fetch(base + '/up/world/' + MUNDO + '/0')
+                .then(r => r.json())
+                .then(d => { document.getElementById('online-count').textContent = d.currentcount; })
+                .catch(() => { document.getElementById('online-count').textContent = '--'; });
+        }
+
+        // Ranking: lê o arquivo ranking.json que fica no repositório, junto do index.html
+        // Gerado pelo gerar_ranking.py: [{"nome":"Pezzolatto","rank":"Nome do rank","posicao":28,"prestigio":0}, ...]
+        function carregarRanking(base) {
+            fetch('ranking.json?t=' + Date.now())
+                .then(r => { if (!r.ok) throw new Error('sem ranking'); return r.json(); })
+                .then(lista => {
+                    const box = document.getElementById('lista-ranking');
+                    box.replaceChildren();
+                    lista.slice(0, 10).forEach((j, i) => {
+                        const slot = document.createElement('div');
+                        slot.className = 'mc-slot p-3 flex items-center gap-3';
+                        const pos = document.createElement('span');
+                        pos.className = 'px-title font-bold text-yellow-400 text-xl w-6 text-center';
+                        pos.textContent = i + 1;
+                        const img = document.createElement('img');
+                        img.src = 'https://mc-heads.net/avatar/' + encodeURIComponent(j.nome) + '/40';
+                        img.width = 40; img.height = 40; img.alt = '';
+                        img.className = 'w-10 h-10 bg-stone-700';
+                        img.onerror = () => { img.style.visibility = 'hidden'; };
+                        const info = document.createElement('div');
+                        info.className = 'flex-grow min-w-0';
+                        const nome = document.createElement('p');
+                        nome.className = 'px-title text-lg font-bold text-white leading-tight';
+                        nome.textContent = j.nome;
+                        const nivel = document.createElement('p');
+                        nivel.className = 'text-xs text-stone-400';
+                        nivel.textContent = j.rank;
+                        info.append(nome, nivel);
+                        const pts = document.createElement('span');
+                        pts.className = 'px-tiny text-orange-300';
+                        pts.textContent = j.prestigio > 0 ? 'Prestígio ' + j.prestigio : '';
+                        slot.append(pos, img, info, pts);
+                        box.append(slot);
+                    });
+                })
+                .catch(() => { /* mantém o exemplo até o ranking.json existir */ });
+        }
 
         // Botão de copiar IP
         const btn = document.getElementById('copiar');
